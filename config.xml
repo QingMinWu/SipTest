@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="gbk"?>
+<property>
+	
+ 
+ <!--数据库配置参数，必填字段包括数据库的url,用户名，密码，接口请求地址URL，其他为选填字段，主要是打印日志的主机信息和命令，如果填了，工具启动时自动监控日志-->
+
+  <EVN name='广州测试194'>
+    <DBURL>jdbc:oracle:thin:@10.3.3.194:1521:gxngcrm</DBURL>
+ 	  <DBusername>base</DBusername>
+ 	  <DBpassword>base#123</DBpassword>
+    <URL>http://10.3.3.188:50001/CRMService</URL>
+    <AppServer>10.3.3.188</AppServer>
+    <AppUser>aiquery</AppUser>
+    <AppPwd>gzcrm%123</AppPwd>
+    <AppCommand>tailapp.sh |grep 96660027</AppCommand>
+    <SoaServer>10.3.3.188</SoaServer>
+    <SoaUser>aiquery</SoaUser>
+    <SoaPwd>gzcrm%123</SoaPwd>
+    <SoaCommand>tailsoa.sh |grep 96660027</SoaCommand>
+  	</EVN> 	
+  	
+   <EVN name='江西测试218'>
+    <DBURL>jdbc:oracle:thin:@10.3.3.218:1521:jxcrm</DBURL>
+ 	  <DBusername>base</DBusername>
+ 	  <DBpassword>Abcd123</DBpassword>
+    <URL>http://10.3.3.182:50001/CRMService</URL>
+    <AppServer>10.3.3.185</AppServer>
+    <AppUser>aiquery</AppUser>
+    <AppPwd>jxcrm%123</AppPwd>
+    <AppCommand>tailapp.sh |grep 96660027</AppCommand>
+    <SoaServer>10.3.3.182</SoaServer>
+    <SoaUser>aiquery</SoaUser>
+    <SoaPwd>gzcrm%123</SoaPwd>
+    <SoaCommand>tailsoa.sh |grep 96660027</SoaCommand>
+  	</EVN> 
+  	
+  <EVN name='联调库38(42映射)'>
+    <DBURL>jdbc:oracle:thin:@10.182.20.42:9404:ncdebdb</DBURL>
+ 	  <DBusername>base</DBusername>
+ 	  <DBpassword>Abcd123</DBpassword>
+    <URL>http://10.182.20.42:60001/CRMService</URL>
+  </EVN> 
+ 	
+ 	
+ 	<!--paramsql为查找入参的sql,结果集需按照参数编码，参数名称，是否为空，渠道排序,$OIname$代表接口名-->
+ 	<DBparamsql>select b.param_code, b.param_name, b.is_null,a.interface_id from SIP.BS_BUSI_ACCESS a left join SIP.BS_BUSI_ACCESS_PARAM b on a.busi_access_id = b.busi_access_id where  b.param_type = 0 and a.state='U' and b.state='U' and b.param_code is not null and a.busi_access_code='$OIname$' and a.interface_id='$interfaceid$'</DBparamsql>
+ 	<!--当接口无入参时，调用这个sql查找该接口的interfaceid,$OIname$代表接口名,busi_access_name用于插入数据库soa_message填写接口描述-->
+ 	<DBinterfacesql>select a.interface_id,a.busi_access_name from SIP.BS_BUSI_ACCESS a where a.state='U' and a.busi_access_code='$OIname$'</DBinterfacesql>
+ 	
+ 	<!--Json报文公共部分,可自行修改公用部分的参数-->
+ 	<Jsondata>{"PubInfo":{"TransactionId":"DB1481702847825","TransactionTime":"20161210140824","InterfaceId":"$interfaceid$","InterfaceType":"$interfacetype$","StationId": "99999999","OpId":"95550001","OrgId":"1000","RegionCode":"771","CountyCode":"9900","ClientIP":"127.0.0.1","ClerkId":""},"Request":{"BusiParams":{$busiparam$},"BusiCode":$busicode$}}</Jsondata>
+ 	<!--渠道信息 渠道名称|渠道ID|渠道TYPE 以逗号分隔（涉及符号都需要要输入英文格式）-->
+ 	<Interface>个人台席6000|6000|6,创富平台6012|6012|12,客服6014|6014|14,掌上营业厅6017|6017|17,流量币平台6019|6019|19,自助终端6021|6021|21,微信营业厅6029|6029|29,银行购机业务6031|6031|31,清单机6025|6025|25</Interface>
+ 	
+ 	 	
+</property>
